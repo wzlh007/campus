@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+		<title>华东师范大学虚拟校园</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/templatemo_style.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link href='http://fonts.useso.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>	
+		<script src="../Build/Cesium/Cesium.js"></script>
+		  <style>
+			  @import url(../Build/Cesium/Widgets/widgets.css);
+			  html, body, #cesiumContainer {
+				  width: 100%; height: 90%; margin: 0; padding: 0; 
+			  }
+			  #header{width:100%; height:70px;margin: 0; padding: 0; postion:relative;}
+			   #logo{width:60;height:60; margin: 0; padding: 0;top:20px;}
+			   
+			   #lag:hover{border-color:#F00;cursor:pointer}
+			   .toolbar2{display:inline-block;background:rgba(42,42,42,0.7);border-radius:5px;border:1px solid #444;padding:5px 10px;color:#fff;line-height:150%;position: absolute;z-index:1;}
+		  </style>		
+	</head>
+	<body id="top" data-spy="scroll" data-target=".navbar-collapse">
+
+	<!-- start templatemo navigation -->
+    <!--<div><font face="Microsoft YaHei UI">华东师范大学虚拟校园</font></div> -->
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+        		<div class="navbar-header">
+				<a href="#" class="navbar-brand"><font face="Microsoft YaHei UI"><img src="images/logo.png" width="100"/>华东师范大学虚拟校园</font></a>
+				<div id="test"><button type="button" onclick="getcamera()">Click Me!</button></div>
+
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a id="lag" onClick="showVector()"><font face="Microsoft YaHei UI">矢量</font></a></li>
+					<li><a id="lag" onClick="showBox()"><font face="Microsoft YaHei UI">灰色简图</font></a></li>
+                    <li><a id="lag" onClick="showModel2()"><font face="Microsoft YaHei UI">三维仿真</font></a></li>
+					<li><a id="lag" onClick="Navigate()"><font face="Microsoft YaHei UI">导览</font></a></li>
+					<li><a id="lag" onClick="pick()"><font face="Microsoft YaHei UI">显示经纬度</font></a></li>
+					
+				</ul>
+			</div>
+			
+		</div>
+	</nav>
+	<!-- end templatemo navigation -->
+	<section id="home" >
+		<div class="toolbar2">
+			<div><input id="gates" type="checkbox" onclick="showMarker('gates',gates)"/>
+			<label for="gates">校门</label></div>
+			<div><input id="parking" type="checkbox" onclick="showMarker('parking',parking)" />
+			<label for="parking">停车场</label></div>
+			<div><input id="parking_garage" type="checkbox" onclick="showMarker('parking_garage',parking_garage)" />
+			<label for="parking_garage">地下车库</label></div>
+			<div><input id="library" type="checkbox" onclick="showMarker('library',library)" />
+			<label for="library">图书馆</label></div>
+			<div><input id="bus" type="checkbox"  onclick="showMarker('bus',bus)"  />
+			<label for="bus">公交车站</label></div>
+			<div><input id="ATM" type="checkbox"  onclick="showMarker('ATM',ATM)"  />
+			<label for="ATM">ATM机</label></div>
+			<div><input id="schbus" type="checkbox"  onclick="showMarker('schbus',schbus)"  />
+			<label for="schbus">校车</label></div>
+			<div><input id="restaurant" type="checkbox"  onclick="showMarker('restaurant',restaurant)"  />
+			<label for="restaurant">餐厅</label></div>
+			<div><input id="teachbuilding" type="checkbox"  onclick="showMarker('teachbuilding',teachbuilding)"  />
+			<label for="teachbuilding">教学楼</label></div>
+		</div>
+<div id="cesiumContainer"></div>
+  <script>
+    var viewer = new Cesium.Viewer('cesiumContainer',{
+	imageryProvider : new Cesium.BingMapsImageryProvider({
+		url : '//dev.virtualearth.net',
+		key : 'get-yours-at-https://www.bingmapsportal.com/',
+		mapStyle : Cesium.BingMapsStyle.AERIAL
+    }),
+	//baseLayerPicker : false,
+	geocoder : false,
+	fullscreenElement:'cesiumContainer',
+	//creditContainer:'coordinates'
+	});
+	
+	//var credit = new Cesium.Credit('ECNU');
+	//var creditDisplay = new Cesium.CreditDisplay(credit);
+	//var c=viewer.cesiumLogo;
+	//document.getElementById("coordinates").innerHTML=c;
+	
+	//infoBox去sandbox
+	viewer.infoBox.frame.setAttribute('sandbox', 'allow-same-origin allow-popups allow-forms allow-scripts allow-top-navigation');
+	
+	  var minhang=Cesium.GeoJsonDataSource.load('../Apps/data/minhang.geojson',{
+		  stroke : Cesium.Color.DARKGRAY,
+		  fill : Cesium.Color.LIGHTGREEN.withAlpha(0.5),
+		  strokeWidth : 1
+	  });
+	  
+	  var water=Cesium.GeoJsonDataSource.load('../Apps/data/waterpolygon.geojson',{
+		  stroke : Cesium.Color.CORNFLOWERBLUE,
+		  fill : Cesium.Color.CORNFLOWERBLUE,
+		  strokeWidth : 0
+	  });
+	  
+	  var dorm=Cesium.GeoJsonDataSource.load('../Apps/data/dorm.geojson',{
+		  stroke : Cesium.Color.INDIANRED,
+		  fill : Cesium.Color.INDIANRED,
+		  strokeWidth : 0
+	  });
+
+	  var roadp=Cesium.GeoJsonDataSource.load('../Apps/data/roadpolygon.geojson',{
+		  stroke : Cesium.Color.LIGHTSLATEGRAY,
+		  fill : Cesium.Color.LIGHTSLATEGRAY,
+		  strokeWidth : 0
+	  });
+
+	  var sportfield=Cesium.GeoJsonDataSource.load('../Apps/data/sportfield.geojson',{
+		  stroke : Cesium.Color.BEIGE,
+		  fill : Cesium.Color.DARKOLIVEGREEN,
+		  strokeWidth : 0
+	  });
+
+	//  var building = Cesium.GeoJsonDataSource.load('../Apps/data/building.geojson',{
+	//	  stroke : Cesium.Color.BLACK,
+		//  fill : Cesium.Color.DARKSALMON,
+		//  strokeWidth : 1
+	  //});
+	  var building = new Cesium.GeoJsonDataSource();
+			building.load('../Apps/data/building.geojson',{
+				stroke : Cesium.Color.BLACK,
+				fill : Cesium.Color.DARKSALMON,
+				strokeWidth : 1
+	  });
+	  
+	  var vegetation=Cesium.GeoJsonDataSource.load('../Apps/data/vegetation.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.PALEGREEN,
+		  strokeWidth : 1
+	  });
+	  
+	  var funcArea=Cesium.GeoJsonDataSource.load('../Apps/data/funcArea.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.YELLOW.withAlpha(0.5),
+		  strokeWidth : 1
+	  });
+	
+	  var gates=new Cesium.GeoJsonDataSource();
+	  gates.load('../Apps/data/gates.geojson');
+	  
+	  var parking=new Cesium.GeoJsonDataSource();
+	  parking.load('../Apps/data/parking.geojson');
+	  
+	  var parking_garage=new Cesium.GeoJsonDataSource();
+	  parking_garage.load('../Apps/data/parking_garage.geojson');
+	  
+	  var library=new Cesium.GeoJsonDataSource();
+	  library.load('../Apps/data/library.geojson');
+	  
+	  var bus=new Cesium.GeoJsonDataSource();
+	  bus.load('../Apps/data/bus.geojson');
+	  
+	  var ATM=new Cesium.GeoJsonDataSource();
+	  ATM.load('../Apps/data/ATM.geojson');
+	  
+	  var schbus=new Cesium.GeoJsonDataSource();
+	  schbus.load('../Apps/data/schbus.geojson');
+	  
+	  var restaurant=new Cesium.GeoJsonDataSource();
+	  restaurant.load('../Apps/data/restaurant.geojson');
+	  
+	  var teachbuilding=new Cesium.GeoJsonDataSource();
+	  teachbuilding.load('../Apps/data/teachbuilding.geojson');
+	//viewer.dataSources.add(minhang);
+	showfuncArea(funcArea);
+	viewer.flyTo(funcArea);
+	
+	//调节底图图层色彩
+	var layers = viewer.scene.imageryLayers;
+	//var layer = layers.get(0);
+	//layer.contrast=1.3;
+	//layer.saturation=3;
+	
+	//添加新图层:单一png图片
+	//layers.addImageryProvider(new Cesium.SingleTileImageryProvider({
+	//	url : '../Apps/campusimages/campusFinal.png',
+	//	rectangle : Cesium.Rectangle.fromDegrees(121.4408950159029814,31.0252152249088553,121.4580167730065767,31.0405220999256741)
+	//}));
+	
+	//添加tiles图层
+	layers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
+		url : '../Apps/campusimages/tiles6_OSGEO'
+		//maximumLevel :3,
+		//rectangle : Cesium.Rectangle.fromDegrees(121.4408950159029814,31.0252152249088553,121.4580167730065767,31.0405220999256741)
+	}));
+	//layer.alpha = Cesium.defaultValue(alpha, 0.5);
+    //layer.show = Cesium.defaultValue(show, true);
+	//121.4408950159029814,31.0252152249088553 : 121.4580167730065767,31.0405220999256741
+	
+	//导入kml
+	//var kml=Cesium.KmlDataSource.load('../Apps/campusimages/doc.kmz');
+	//viewer.dataSources.add(kml);
+	
+	function showMarker(id,data)
+	{
+	//document.getElementById("coordinates").innerHTML=id;
+		if(document.getElementById(id).checked)
+		{viewer.dataSources.add(data);}
+		else{
+		viewer.dataSources.remove(data);}
+	}
+	
+	//高度模型突起函数
+	function extrude(data)
+	  {
+		  var entities=data.entities.values;
+		  
+		  for (var i = 0; i < entities.length; i++) {
+			  var entity = entities[i];           
+	  
+				  entity.polygon.material = new Cesium.Color(1,1,1,0.8);//Cesium.Color.fromCssColorString(entity.properties.颜色);
+				  entity.polygon.outlineColor = Cesium.Color.WHITE;
+				  entity.polygon.outlineWidth = 10;
+				  entity.polygon.extrudedHeight = entity.properties.高度;
+				  entity.description='<iframe width="450px" height="450px" id='+(i+1)+' src="charts.html"></iframe>';
+				  }
+		  
+		  
+	  }
+	//初始化函数：要素类回归原始属性
+	function initiate()
+	{
+	  water=Cesium.GeoJsonDataSource.load('../Apps/data/waterpolygon.geojson',{
+		  stroke : Cesium.Color.CORNFLOWERBLUE,
+		  fill : Cesium.Color.CORNFLOWERBLUE,
+		  strokeWidth : 0
+	  });
+	  
+	  dorm=Cesium.GeoJsonDataSource.load('../Apps/data/dorm.geojson',{
+		  stroke : Cesium.Color.INDIANRED,
+		  fill : Cesium.Color.INDIANRED,
+		  strokeWidth : 0
+	  });
+	  
+	  roadp=Cesium.GeoJsonDataSource.load('../Apps/data/roadpolygon.geojson',{
+		  stroke : Cesium.Color.LIGHTSLATEGRAY,
+		  fill : Cesium.Color.LIGHTSLATEGRAY,
+		  strokeWidth : 0
+	  });
+
+	  sportfield=Cesium.GeoJsonDataSource.load('../Apps/data/sportfield.geojson',{
+		  stroke : Cesium.Color.BEIGE,
+		  fill : Cesium.Color.DARKOLIVEGREEN,
+		  strokeWidth : 0
+	  });
+
+	  building = Cesium.GeoJsonDataSource.load('../Apps/data/building.geojson',{
+		  stroke : Cesium.Color.BLACK,
+		  fill : Cesium.Color.DARKSALMON,
+		  strokeWidth : 1
+	  });
+	  
+	  vegetation=Cesium.GeoJsonDataSource.load('../Apps/data/vegetation.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.PALEGREEN,
+		  strokeWidth : 1
+	  });
+	  
+	  funcArea=Cesium.GeoJsonDataSource.load('../Apps/data/funcArea.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.YELLOW.withAlpha(0.5),
+		  strokeWidth : 1
+	  });
+	  
+	  //gates.GeoJsonDataSource.load('../Apps/data/gates.geojson');
+
+	  
+	}
+	
+	function showfuncArea(data)
+	{
+	    data.then(function(dataSource) {
+		  //viewer.dataSources.add(dataSource);
+		  
+		  var entities=dataSource.entities.values;
+		  
+		  for (var i = 0; i < entities.length; i++) {
+			  var entity = entities[i];           
+	  
+				  entity.polygon.material = Cesium.Color.fromCssColorString(entity.properties.颜色).withAlpha(0.5);
+				  entity.polygon.outlineColor = Cesium.Color.SILVER;
+				  //entity.polygon.extrudedHeight = entity.properties.height;
+				  }
+		  
+		  }).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		  viewer.dataSources.add(funcArea);
+	}
+	
+    function showVector()
+    {
+	    viewer.dataSources.removeAll();
+		viewer.entities.removeAll();
+		initiate();
+		//viewer.dataSources.add(minhang);
+		viewer.dataSources.add(water);
+		viewer.dataSources.add(dorm);
+		viewer.dataSources.add(roadp);
+		viewer.dataSources.add(sportfield);
+		viewer.dataSources.add(building);
+		viewer.dataSources.add(vegetation);
+		
+		//showfuncArea(funcArea);
+		showlabel(0.3);
+		
+		viewer.zoomTo(label);
+		//document.getElementById("lag5").innerHTML="haha";
+		//var Geoentities = createGeoentity(building,dorm);
+		//document.getElementById("lag5").innerHTML="haha";
+		
+		
+		//viewer.camera.flyTo({
+			//destination : Cesium.Rectangle.fromDegrees(121.43132684,31.02652878,121.46997124,31.04127843)
+			//});
+    }
+    
+	function showBox()
+	{
+		viewer.entities.removeAll();
+		viewer.dataSources.removeAll();
+		
+		//viewer.dataSources.add(minhang);	
+		//viewer.dataSources.add(water);
+		viewer.dataSources.add(dorm);
+		//viewer.dataSources.add(roadp);
+		//viewer.dataSources.add(sportfield);
+		viewer.dataSources.add(building);
+		//viewer.dataSources.add(vegetation);
+		//showfuncArea(funcArea);
+		showlabel(1.5);
+		extrude(dorm);
+		extrude(building);
+		viewer.zoomTo(building);
+		//viewer.camera.flyTo({
+			//destination : Cesium.Rectangle.fromDegrees(121.44107759,31.02911700,121.46010902,31.03694032)
+			//});
+	}
+	//对象构造器：模型
+	function model(name,lon,lat,add)
+	{
+		this.name=name;
+		this.lon=lon;
+		this.lat=lat;
+		this.add=add;
+		this.show=show;
+		function show()
+		{
+		  var position = Cesium.Cartesian3.fromDegrees(this.lon,this.lat,0);
+	   	  var heading = Cesium.Math.toRadians(0);
+		  var pitch = 0;
+		  var roll = 0;
+		  var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		  var b16 = viewer.entities.add({
+		 	  name : this.name,
+		 	  position : position,
+			  orientation : orientation,
+			  model : {
+				  uri : this.add,
+				  //minimumPixelSize : 128
+			  }
+		  });
+		}
+	}
+	
+	//对象构造器：地理实体
+	function geoentity(name,entity)
+	{
+		this.name=name;
+		this.entity=entity;
+	}
+	
+	function createGeoentity(buidling,dorm)
+	{
+		var Geoentities=[];
+		building.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var name = entity.properties.name;
+				//alert(name);
+				var geoentity = new geoentity(name,entity);
+				alert(geoentity.name);
+				Geoentities.push(geoentity);
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		dorm.then(function(dataSource){
+			var entities = dataSource.entities.values;
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var name = entity.properties.name;
+				var geoentity = new geoentity(name,entity);
+				Geoentities.push(geoentity);
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		document.getElementById("lag5").innerHTML="ahah";
+		//alert(Geoentities.length);
+		return Geoentities;
+	}
+	
+	
+	//document.getElementById("lag5").innerHTML=Geoentities[0].name;
+	
+	function getPath()
+	{
+		var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+		var stop = Cesium.JulianDate.addSeconds(start, 190, new Cesium.JulianDate());
+		//var travpath = Cesium.GeoJsonDataSource.load('../Apps/data/travpath.geojson');
+		var positions = Cesium.Cartesian3.fromDegreesArray([121.44975940905225, 31.026823980783909,121.44838322493906, 31.030686174908027 ,  121.45100241405771, 31.031640625180081,  121.4499813742318, 31.03394906304737 ,  121.44867177967247, 31.035058888945105 ,  121.44698484430792, 31.03565819492988 ,  121.44536449849723, 31.035791374037608 ,  121.4447873890304, 31.034082242155097 ,  121.44500935420994, 31.032617271970086 ,  121.4447873890304, 31.031307677410759 , 121.44578623233836, 31.030153458477116 , 121.44609698358973, 31.029687331600066 , 121.44609698358973, 31.028555309184377 , 121.44658530698473, 31.027978199717555 , 121.44753975725678, 31.027778431055964 , 121.44887154833407, 31.028177968379147 , 121.44889374485201, 31.028200164897104 , 121.44889374485201, 31.028200164897104 , 121.44893813788792, 31.028200164897104]);
+		var message=["你的正前方是图书馆","你的左手边是教学区"];
+          //重点了解SampledPositionProperty
+		  var property = new Cesium.SampledPositionProperty();
+		  //document.getElementById("lag5").innerHTML=positions[0].toString();
+		  for(var i=0 ; i<positions.length ; i++)
+		  { 
+			  var time = Cesium.JulianDate.addSeconds(start, 10*i, new Cesium.JulianDate());
+			  //var str = Cesium.JulianDate.toIso8601(time);
+			  //alert(str);
+			  var position = positions[i];
+			  //alert(positions[i].toString());
+			  property.addSample(time, position);
+			  //alert(property.getValue(time,new Cesium.Cartesian3()).toString());			  
+		  }
+		  
+		return property;
+	}
+	
+	function Navigate()
+	{
+		var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+		var stop = Cesium.JulianDate.addSeconds(start, 190, new Cesium.JulianDate());
+		//Make sure viewer is at the desired time.
+		viewer.clock.startTime = start.clone();
+		viewer.clock.stopTime = stop.clone();
+		viewer.clock.currentTime = start.clone();
+		viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; //Loop at the end
+		viewer.clock.multiplier = 1;
+		
+		//Set timeline to simulation bounds
+		viewer.timeline.zoomTo(start, stop);
+		
+		var position = getPath();
+		//alert("!");
+		//alert(position.getValue(start,new Cesium.Cartesian3()).toString());
+		var navcar = viewer.entities.add({
+		//Set the entity availability to the same interval as the simulation time.
+		availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
+			start : start,
+			stop : stop
+		})]),
+	
+		//Use our computed positions
+		position : position,
+	    
+		//Automatically compute orientation based on position movement.
+		orientation : new Cesium.VelocityOrientationProperty(position),
+	
+		//Load the Cesium plane model to represent the entity
+		model : {
+			uri : '../Apps/3dmodel/CesiumMilkTruck/CesiumMilkTruck.gltf',
+			//minimumPixelSize : 64
+		},
+		path : {
+        resolution : 1,
+        material : new Cesium.PolylineGlowMaterialProperty({
+            glowPower : 0.1,
+            color : Cesium.Color.RED
+        }),
+        width : 30
+        }
+
+		});
+		//alert("!!");
+		navcar.position.setInterpolationOptions({
+            interpolationDegree : 5,
+            interpolationAlgorithm : Cesium.LinearApproximation
+        });
+		viewer.trackedEntity = navcar;
+	}
+	
+	function showModel2()
+	{
+	    viewer.dataSources.removeAll();
+		viewer.entities.removeAll();
+		//showfuncArea(funcArea);
+		
+		//showVector();
+		//extrude(building);
+		/*building.then(function(dataSource){
+		   var entities = dataSource.entities.values;
+		   for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				entity.polygon.show=false;
+			}
+		});*/
+		var models=[new model('本科生公寓21号楼',121.44978350,31.03769624,'../Apps/3dmodel/dorm21.gltf'),
+		            new model('图书馆裙楼',121.44853723,31.03181394,'../Apps/3dmodel/lib2.gltf'),
+					new model('图书馆主楼',121.44765130,31.03051948,'../Apps/3dmodel/librarymain.gltf'),
+					new model('河东食堂',121.44636540,31.03671762,'../Apps/3dmodel/hedongshitang.bgltf'),
+					new model('本科生公寓19号楼',121.44903672,31.03757642,'../Apps/3dmodel/dorm21.gltf'),
+					new model('本科生公寓15号楼',121.44820094,31.03737539,'../Apps/3dmodel/dorm21.gltf'),
+					new model('本科生公寓11号楼',121.44748178,31.03731686,'../Apps/3dmodel/dorm21.gltf'),
+					new model('本科生公寓22号楼',121.45037358,31.03742557,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓20号楼',121.44956380,31.03729733,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓16号楼',121.44866193,31.03720886,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓12号楼',121.44692729,31.03701054,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓8号楼',121.44775455,31.03707305,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓6号楼',121.44424479,31.03671715,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓4号楼',121.44334812,31.03657066,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓9号楼',121.44747033,31.03819156,'../Apps/3dmodel/dorm09.gltf'),
+					new model('本科生公寓7号楼',121.44661642,31.03796109,'../Apps/3dmodel/dorm09.gltf'),
+					new model('河西食堂',121.44504553,31.03648267,'../Apps/3dmodel/hexishitang.gltf'),
+					new model('第一教学楼',121.45052605,31.03191536,'../Apps/3dmodel/teachbuilding1.gltf'),
+					new model('第二教学楼',121.45015549,31.03284853,'../Apps/3dmodel/teachbuilding2.gltf'),
+					new model('第三教学楼',121.44668865,31.03110481,'../Apps/3dmodel/teachbuilding3.gltf'),
+					new model('第四教学楼',121.44628897,31.03146917,'../Apps/3dmodel/teachbuilding4.gltf'),
+					new model('传播与艺术学院',121.44911305,31.03352621,'../Apps/3dmodel/media_art.gltf')
+					];
+		for(var i=0;i<models.length;i++)
+		{
+			models[i].show();
+		}
+		//viewer.zoomTo(viewer.entities);
+
+	}
+	
+	function pick()
+	{
+		var scene = viewer.scene;
+		var handler;
+		var ellipsoid = scene.globe.ellipsoid;
+		handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+		handler.setInputAction(function(movement) {
+			var cartesian = viewer.camera.pickEllipsoid(movement.endPosition, ellipsoid);
+			if (cartesian) {
+				var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+				var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(8);
+				var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(8);
+				
+				document.getElementById("coordinates").innerHTML=longitudeString+","+latitudeString;
+				//entity.position = cartesian;
+				//entity.label.show = true;
+				//entity.label.text = '(' + longitudeString + ', ' + latitudeString + ')';
+			} else {
+				document.getElementById("coordinates").innerHTML="经度:NONE  纬度:NONE";
+			}
+		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+		
+		//handler.removeInputAction(LEFT_DOUBLE_CLICK);
+		handler.setInputAction(function(movement) {
+			var cartesian = viewer.camera.pickEllipsoid(movement.endPosition, ellipsoid);
+			if (cartesian) {
+				var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+				var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(8);
+				var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(8);
+				
+				document.getElementById("coordinates").innerHTML=longitudeString+","+latitudeString;
+				//entity.position = cartesian;
+				//entity.label.show = true;
+				//entity.label.text = '(' + longitudeString + ', ' + latitudeString + ')';
+			} else {
+				document.getElementById("coordinates").innerHTML="经度:NONE  纬度:NONE";
+			}
+		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+	}
+	
+	function showModel()
+	{
+		viewer.dataSources.removeAll();
+		viewer.entities.removeAll();
+		
+		var position = Cesium.Cartesian3.fromDegrees(121.44978350,31.03769624,0);
+		var heading = Cesium.Math.toRadians(0);
+		var pitch = 0;
+		var roll = 0;
+		var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		var b16 = viewer.entities.add({
+			name : '本科生公寓21号楼',
+			position : position,
+			orientation : orientation,
+			model : {
+				uri : '../Apps/3dmodel/dorm21.gltf',
+				//minimumPixelSize : 128
+			}
+		});
+		
+		var position = Cesium.Cartesian3.fromDegrees(121.44853723,31.03181394,0);
+		var heading = Cesium.Math.toRadians(0);
+		var pitch = 0;
+		var roll = 0;
+		var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		var lib2 = viewer.entities.add({
+			name : '图书馆裙楼',
+			position : position,
+			orientation : orientation,
+			model : {
+				uri : '../Apps/3dmodel/lib2.gltf',
+				//minimumPixelSize : 128
+			}
+		});
+		
+		var position = Cesium.Cartesian3.fromDegrees(121.44765130,31.03051948,0);
+		var heading = Cesium.Math.toRadians(0);
+		var pitch = 0;
+		var roll = 0;
+		var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		var lib = viewer.entities.add({
+			name : '图书馆主楼',
+			position : position,
+			orientation : orientation,
+			model : {
+				uri : '../Apps/3dmodel/librarymain.gltf',
+				//minimumPixelSize : 128
+			}
+		});
+		
+}
+	function searchloc()
+	{
+		var name=document.getElementById("searchbox").value;
+		//document.getElementById("lag5").innerHTML=document.getElementById("searchbox").value;
+		var address = new RegExp(name);
+		
+		building.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var geoname = entity.properties.名称;
+				//alert(name);
+				if(address.test(geoname)==true)
+				{
+					viewer.zoomTo(entity).then(function(result){
+					  //if (result) {
+						viewer.selectedEntity = entity;
+					  //}
+					  
+					});
+					//viewer.trackedEntity = entity;
+					break;
+				}
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		dorm.then(function(dataSource){
+			var entities = dataSource.entities.values;
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var geoname = entity.properties.名称;
+				if(address.test(geoname)==true)
+				{
+					viewer.zoomTo(entity).then(function(result){
+					  //if (result) {
+						viewer.selectedEntity = entity;
+						
+					  //}
+					});
+					//viewer.trackedEntity = entity;
+					break;
+				}
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+	}
+	
+	function showlabel(height)
+	{
+	    building.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			var time = Cesium.JulianDate.now();
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var label = entity.properties.名称;
+				var lon = entity.properties.中心经度;
+				var lat = entity.properties.中心纬度;
+				//alert(name);
+				viewer.entities.add({
+					position : Cesium.Cartesian3.fromDegrees(lon,lat),
+					label : {
+						text : label,
+						font : '16px 微软雅黑',
+						verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+						fillColor : Cesium.Color.SKYBLUE,
+						outlineColor : Cesium.Color.BLACK,
+						outlineWidth : 2,
+						style : Cesium.LabelStyle.FILL_AND_OUTLINE,
+						//pixelOffset : new Cesium.Cartesian2(0.0, entity.properties.高度),
+						eyeOffset : new Cesium.Cartesian3(0,entity.properties.高度*height,0),
+						translucencyByDistance : new Cesium.NearFarScalar(1000, 1.0, 2000, 0.0)
+						//pixelOffsetScaleByDistance : new Cesium.NearFarScalar(1.0e3, 1.0, 1.5e6, 0.0)
+					}
+				});
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		});
+		
+		dorm.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			var time = Cesium.JulianDate.now();
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var label = entity.properties.名称;
+				var lon = entity.properties.中心经度;
+				var lat = entity.properties.中心纬度;
+				//alert(name);
+				viewer.entities.add({
+					position : Cesium.Cartesian3.fromDegrees(lon,lat),
+					label : {
+						text : label,
+						font : '16px 微软雅黑',
+						verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+						fillColor : Cesium.Color.CRIMSON,
+						outlineColor : Cesium.Color.BLACK,
+						outlineWidth : 2,
+						style : Cesium.LabelStyle.FILL_AND_OUTLINE,
+						//pixelOffset : new Cesium.Cartesian2(0.0, entity.properties.高度),
+						eyeOffset : new Cesium.Cartesian3(0,entity.properties.高度*height,0),
+						translucencyByDistance : new Cesium.NearFarScalar(1000, 1.0, 2000, 0.0)
+						//pixelOffsetScaleByDistance : new Cesium.NearFarScalar(1.0e3, 1.0, 1.5e6, 0.0)
+					}
+				});
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		});
+	}
+	
+	function getcamera()
+	{
+		var destination = viewer.camera.position;//.toString();
+		var orientation = 
+		{heading : viewer.camera.heading,
+		pitch : viewer.camera.pitch,
+		roll : viewer.camera.roll};
+		alert(destination.toString()+";"+orientation.heading+";"+orientation.pitch+";"+orientation.roll);
+	}
+  </script>		
+<div align="center">
+	  <input name="search" type="text" id="searchbox">
+	  <input name="searchbutton" type="submit" id="searchbutton" class="btn btn-success" onClick="searchloc()" value="搜索">
+      <span id="lag5" style="text-align:right;"></span></div>  
+	  <div><span id="coordinates" style="text-align:right;"></span></div>
+	</section>	
+	
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/smoothscroll.js"></script>
+	<script src="js/jquery.flexslider.js"></script>
+
+	<!-- start templatemo back to top js -->
+
+	<!-- end templatemo back to top js -->
+
+	</body>
+</html>

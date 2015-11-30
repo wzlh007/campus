@@ -1,0 +1,15 @@
+Hi Xi,
+
+
+
+Thanks for providing the model.  This is most likely a bug in the SketchUp COLLADA exporter or the COLLADA-to-glTF converter.  Either way, I suspect we can fix it in the COLLADA-to-glTF converter.  I submitted issue #342 for this.  We'll try to get a fix soon.
+
+
+
+
+In the meantime, there is a simple workaround.  In the glTF file, I removed 3042 from the states array in technique0 and technique1.  I attached a screenshot and the modified glTF file.
+
+
+
+
+Patrick

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "title": "图书馆", "开放时间": "周一至周五8:00-22:00，周末、国定假8:30-21:30", "网址链接": "http:\/\/www.lib.ecnu.edu.cn\/","marker-symbol": "library","marker-color": "#85D541" }, "geometry": { "type": "Point", "coordinates": [ 121.44806793244527, 31.031438763144134 ] } }
+]
+}

@@ -1,0 +1,304 @@
+{
+    "accessors": {
+        "accessor_16": {
+            "bufferView": "bufferView_22",
+            "byteOffset": 0,
+            "byteStride": 0,
+            "componentType": 5123,
+            "count": 120,
+            "type": "SCALAR"
+        },
+        "accessor_18": {
+            "bufferView": "bufferView_23",
+            "byteOffset": 0,
+            "byteStride": 12,
+            "componentType": 5126,
+            "count": 66,
+            "max": [
+                10.7545,
+                27.9921,
+                22.2494
+            ],
+            "min": [
+                -51.6433,
+                -2.20034,
+                0.00935385
+            ],
+            "type": "VEC3"
+        },
+        "accessor_20": {
+            "bufferView": "bufferView_23",
+            "byteOffset": 792,
+            "byteStride": 12,
+            "componentType": 5126,
+            "count": 66,
+            "max": [
+                0.920509,
+                0.954456,
+                1
+            ],
+            "min": [
+                -0.913407,
+                -0.920518,
+                -1
+            ],
+            "type": "VEC3"
+        }
+    },
+    "animations": {},
+    "asset": {
+        "generator": "collada2gltf@173625dc5ff1b7e8046666be1f3ca2835512ac08",
+        "premultipliedAlpha": true,
+        "profile": "WebGL 1.0.2",
+        "version": 0.8
+    },
+    "bufferViews": {
+        "bufferView_22": {
+            "buffer": "Model",
+            "byteLength": 240,
+            "byteOffset": 0,
+            "target": 34963
+        },
+        "bufferView_23": {
+            "buffer": "Model",
+            "byteLength": 1584,
+            "byteOffset": 240,
+            "target": 34962
+        }
+    },
+    "buffers": {
+        "Model": {
+            "byteLength": 1824,
+            "type": "arraybuffer",
+            "uri": "data:application/octet-stream;base64,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"
+        }
+    },
+    "materials": {
+        "ID6": {
+            "instanceTechnique": {
+                "technique": "technique0",
+                "values": {
+                    "diffuse": [
+                        1,
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            "name": "__auto_13"
+        }
+    },
+    "meshes": {
+        "ID4": {
+            "name": "ID4",
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": "accessor_20",
+                        "POSITION": "accessor_18"
+                    },
+                    "indices": "accessor_16",
+                    "material": "ID6",
+                    "primitive": 4
+                }
+            ]
+        }
+    },
+    "nodes": {
+        "ID2": {
+            "children": [
+                "ID3"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                17.1404,
+                2.30885,
+                0,
+                1
+            ],
+            "name": "instance_0"
+        },
+        "ID3": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "ID4"
+            ],
+            "name": "skp699F"
+        },
+        "node_0": {
+            "children": [
+                "ID2"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "SketchUp"
+        },
+        "node_3": {
+            "children": [
+                "node_0"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "Y_UP_Transform"
+        }
+    },
+    "programs": {
+        "program_0": {
+            "attributes": [
+                "a_normal",
+                "a_position"
+            ],
+            "fragmentShader": "Model0FS",
+            "vertexShader": "Model0VS"
+        }
+    },
+    "scene": "defaultScene",
+    "scenes": {
+        "defaultScene": {
+            "nodes": [
+                "node_3"
+            ]
+        }
+    },
+    "shaders": {
+        "Model0FS": {
+            "type": 35632,
+            "uri": "data:text/plain;base64,cHJlY2lzaW9uIGhpZ2hwIGZsb2F0Owp2YXJ5aW5nIHZlYzMgdl9ub3JtYWw7CnVuaWZvcm0gdmVjNCB1X2RpZmZ1c2U7CnZvaWQgbWFpbih2b2lkKSB7CnZlYzMgbm9ybWFsID0gbm9ybWFsaXplKHZfbm9ybWFsKTsKdmVjNCBjb2xvciA9IHZlYzQoMC4sIDAuLCAwLiwgMC4pOwp2ZWM0IGRpZmZ1c2UgPSB2ZWM0KDAuLCAwLiwgMC4sIDEuKTsKZGlmZnVzZSA9IHVfZGlmZnVzZTsKZGlmZnVzZS54eXogKj0gbWF4KGRvdChub3JtYWwsdmVjMygwLiwwLiwxLikpLCAwLik7CmNvbG9yLnh5eiArPSBkaWZmdXNlLnh5ejsKY29sb3IgPSB2ZWM0KGNvbG9yLnJnYiAqIGRpZmZ1c2UuYSwgZGlmZnVzZS5hKTsKZ2xfRnJhZ0NvbG9yID0gY29sb3I7Cn0K"
+        },
+        "Model0VS": {
+            "type": 35633,
+            "uri": "data:text/plain;base64,cHJlY2lzaW9uIGhpZ2hwIGZsb2F0OwphdHRyaWJ1dGUgdmVjMyBhX3Bvc2l0aW9uOwphdHRyaWJ1dGUgdmVjMyBhX25vcm1hbDsKdmFyeWluZyB2ZWMzIHZfbm9ybWFsOwp1bmlmb3JtIG1hdDMgdV9ub3JtYWxNYXRyaXg7CnVuaWZvcm0gbWF0NCB1X21vZGVsVmlld01hdHJpeDsKdW5pZm9ybSBtYXQ0IHVfcHJvamVjdGlvbk1hdHJpeDsKdm9pZCBtYWluKHZvaWQpIHsKdmVjNCBwb3MgPSB1X21vZGVsVmlld01hdHJpeCAqIHZlYzQoYV9wb3NpdGlvbiwxLjApOwp2X25vcm1hbCA9IHVfbm9ybWFsTWF0cml4ICogYV9ub3JtYWw7CmdsX1Bvc2l0aW9uID0gdV9wcm9qZWN0aW9uTWF0cml4ICogcG9zOwp9Cg=="
+        }
+    },
+    "skins": {},
+    "techniques": {
+        "technique0": {
+            "parameters": {
+                "diffuse": {
+                    "type": 35666
+                },
+                "modelViewMatrix": {
+                    "semantic": "MODELVIEW",
+                    "type": 35676
+                },
+                "normal": {
+                    "semantic": "NORMAL",
+                    "type": 35665
+                },
+                "normalMatrix": {
+                    "semantic": "MODELVIEWINVERSETRANSPOSE",
+                    "type": 35675
+                },
+                "position": {
+                    "semantic": "POSITION",
+                    "type": 35665
+                },
+                "projectionMatrix": {
+                    "semantic": "PROJECTION",
+                    "type": 35676
+                }
+            },
+            "pass": "defaultPass",
+            "passes": {
+                "defaultPass": {
+                    "details": {
+                        "commonProfile": {
+                            "extras": {
+                                "doubleSided": false
+                            },
+                            "lightingModel": "Lambert",
+                            "parameters": [
+                                "diffuse",
+                                "modelViewMatrix",
+                                "normalMatrix",
+                                "projectionMatrix"
+                            ]
+                        },
+                        "type": "COLLADA-1.4.1/commonProfile"
+                    },
+                    "instanceProgram": {
+                        "attributes": {
+                            "a_normal": "normal",
+                            "a_position": "position"
+                        },
+                        "program": "program_0",
+                        "uniforms": {
+                            "u_diffuse": "diffuse",
+                            "u_modelViewMatrix": "modelViewMatrix",
+                            "u_normalMatrix": "normalMatrix",
+                            "u_projectionMatrix": "projectionMatrix"
+                        }
+                    },
+                    "states": {
+                        "enable": [
+                            2884,
+                            2929
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

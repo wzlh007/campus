@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title></title>
+</head>
+<body>
+<div id="test"><script>var a=1;</script></div>
+<div id="test2"></div>
+<div id="test3"></div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="bar" style="height:400px;width:400px"></div>
+<div id="pie" style="height:400px;width:400px"></div>
+
+<!-- ECharts单文件引入 -->
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script>var data=new Array();
+var gid=parent.document.getElementsByTagName("iframe")[0].id;
+//var gid=3;
+//document.getElementById("test2").innerHTML=a;
+</script>
+<div id="test4"></div>
+<script src="test.js">
+function drawCharts()
+{
+	    // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+				
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('bar')); 
+                
+                var option = {
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data:["资产总值"]
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : getCol(data,1)//["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            "name":"资产总值",
+                            "type":"bar",
+                            "data":getCol(data,2)//[5, 20, 40, 10, 10, 20]
+                        }
+
+                    ]
+                };
+        
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+}
+</script>
+<?php
+//include('../phptest/testPHPfunc.php');
+//PHParr2JSarr(1);
+?>
+<script type="text/javascript" >
+getdata(gid);
+//document.getElementById("test").innerHTML=data[0,0];
+//drawCharts();
+	    // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+				//'echarts/chart/pie'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var mybar = ec.init(document.getElementById('bar')); 
+				//var mypie = ec.init(document.getElementById('pie'));
+
+                var baroption = {
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data:["资产总值"]
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : getCol(data,1)//["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            "name":"资产总值",
+                            "type":"bar",
+                            "data":getCol(data,2)//[5, 20, 40, 10, 10, 20]
+                        }
+
+                    ]
+                };
+				
+				
+        
+                // 为echarts对象加载数据 
+                mybar.setOption(baroption); 
+				//mypie.setOption(pieoption);
+            }
+        );
+		//console.log(data);
+
+</script>
+<script>
+
+</script>
+</body>
+</html>

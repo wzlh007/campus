@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tree id="0" radio="1">
+	<item   text="图层" id="layers" open="1">
+		<item text="矢量图层" id="vectors">
+			<item text="建筑物" id="building"></item>
+			<item text="宿舍楼" id="dorm"></item>
+			<item text="绿地" id="vegetation"></item>
+		</item>
+		<item text="栅格影像" id="rasters">
+			<item text="校园瓦片影像" id="campustile"></item>
+		</item>
+		<item text="灰色简图" id="greys">
+			<item text="建筑物" id="building"></item>
+			<item text="宿舍楼" id="dorm"></item>
+			<item text="绿地" id="vegetation"></item>
+		</item>
+		<item text="标签" id="markers"  open="1">
+			<item text="校门" id="gates"></item>
+			<item text="停车场" id="parking"></item>
+			<item text="地下车库" id="parking_garage"></item>
+			<item text="图书馆" id="library"></item>
+			<item text="公交车站" id="bus"></item>
+			<item text="ATM机" id="ATM"></item>
+			<item text="校车" id="schbus"></item>
+			<item text="餐厅" id="restaurant"></item>
+			<item text="教学楼" id="teachbuilding"></item>
+		</item>
+		<item text="仿真模型" id="models">
+			<item text="建筑物" id="buildingmodel"></item>
+		</item>
+	</item>
+</tree>

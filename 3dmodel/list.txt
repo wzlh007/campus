@@ -1,0 +1,47 @@
+本科生公寓21号楼	121.44978350	31.03769624	../Apps/3dmodel/dorm21.gltf
+图书馆裙楼	121.44853723	31.03181394	../Apps/3dmodel/lib2.gltf
+图书馆主楼	121.44765130	31.03051948	../Apps/3dmodel/librarymain.gltf
+河东食堂	121.44636540	31.03671762	../Apps/3dmodel/hedongshitang.gltf
+本科生公寓19号楼	121.44903672	31.03757642	../Apps/3dmodel/dorm21.gltf
+本科生公寓15号楼	121.44820094	31.03737539	../Apps/3dmodel/dorm21.gltf
+本科生公寓11号楼	121.44748178	31.03731686	../Apps/3dmodel/dorm21.gltf
+本科生公寓22号楼	121.45037358	31.03742557	../Apps/3dmodel/dorm22.gltf
+本科生公寓20号楼	121.44956380	31.03729733	../Apps/3dmodel/dorm22.gltf
+本科生公寓16号楼	121.44866193	31.03720886	../Apps/3dmodel/dorm22.gltf
+本科生公寓12号楼	121.44775455	31.03707305	../Apps/3dmodel/dorm22.gltf
+本科生公寓8号楼	121.44692729	31.03701054	../Apps/3dmodel/dorm22.gltf
+本科生公寓6号楼	121.44424479	31.03671715	../Apps/3dmodel/dorm22.gltf
+本科生公寓4号楼	121.44334812	31.03657066	../Apps/3dmodel/dorm22.gltf
+本科生公寓1号楼
+本科生公寓2号楼
+本科生公寓3号楼
+本科生公寓5号楼
+本科生公寓7号楼	121.44661642	31.03796109	../Apps/3dmodel/dorm09.gltf
+本科生公寓9号楼	121.44747033	31.03819156	../Apps/3dmodel/dorm09.gltf
+本科生公寓10号楼
+河西食堂	121.44504553	31.03648267	../Apps/3dmodel/hexishitang.gltf
+河西综合楼
+孟宪承书院
+体育馆
+大学生活动中心
+实验A楼
+实验B楼
+实验C楼	121.44662	31.03475	../Apps/3dmodel/shiyanC.bgltf
+实验D楼	121.44534	31.03512	../Apps/3dmodel/shiyanD.bgltf
+传播学院	121.44911305	31.03352621	../Apps/3dmodel/media_art.gltf
+艺术学院
+资源生物楼	121.44519	31.03432	../Apps/3dmodel/zihuanshengwulou.bgltf
+化学楼
+第一教学楼	121.45052605	31.03191536	../Apps/3dmodel/teachbuilding1.gltf
+第二教学楼	121.45015549	31.03284853	../Apps/3dmodel/teachbuilding2.gltf
+第三教学楼	121.44668865	31.03110481	../Apps/3dmodel/teachbuilding3.gltf
+第四教学楼	121.44628897	31.03146917	../Apps/3dmodel/teachbuilding4.gltf
+夏雨厅
+人文楼
+法商楼
+外语学院	121.45021	31.02912	../Apps/3dmodel/waiyulou.bgltf
+金融与统计学院
+信息科学技术学院
+物理学系
+秋实阁
+行政楼	121.45116	31.02773	../Apps/3dmodel/officebuilding.bgltf

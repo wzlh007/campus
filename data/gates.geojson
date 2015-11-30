@@ -1,0 +1,82 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44825095,
+		  31.03914308
+        ]
+      },
+      "properties": {
+        "title": "华东师范大学北门",
+		"description": "剑川路399号",
+        "marker-symbol": "entrance",
+        "marker-color": "#B83FF6"
+      }
+    },
+	{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44199667,31.03591928
+        ]
+      },
+      "properties": {
+        "title": "莲花南路校门1",
+		"description": "近本科生公寓",
+        "marker-symbol": "entrance",
+        "marker-color": "#B83FF6"
+      }
+    },
+	{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44458835,31.02982425
+        ]
+      },
+      "properties": {
+        "title": "莲花南路校门2",
+		"description": "莲花南路5005号",
+        "marker-symbol": "entrance",
+        "marker-color": "#B83FF6"
+      }
+    },
+	{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44980852,31.02678330
+        ]
+      },
+      "properties": {
+        "title": "东川路正门",
+		"description": "东川路500号",
+        "marker-symbol": "entrance",
+        "marker-color": "#B83FF6"
+      }
+    },
+	{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45309121,31.03610072
+        ]
+      },
+      "properties": {
+        "title": "虹梅南路研究生公寓校门",
+		"description": "虹梅南路5800号",
+        "marker-symbol": "entrance",
+        "marker-color": "#B83FF6"
+      }
+    }
+
+  ]
+}

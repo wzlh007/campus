@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>虚拟校园</title>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 95%; margin: 0; padding: 0; 
+      }
+	  #header{width:100%; height:70px;margin: 0; padding: 0; postion:relative;}
+	   #logo{width:60;height:60; margin: 0; padding: 0;top:20px;}
+	   #lag{width:30;height:5;margin:1;padding:1;border;border:#000000 solid;}
+	   #lag:hover{border-color:#F00;cursor:pointer}
+  </style>
+  
+</head>
+<body>
+  <div id="header" >
+
+  <span><b><font size="+4" face="Microsoft YaHei UI" >华东师范大学三维地图</font></b></span>
+  <span id="lag" onClick="showVector()">显示矢量数据</span>
+  <span id="lag" onClick="showBox()">显示三维灰色简图</span>
+  <span id="lag" onClick="showModel2()">显示三维仿真模型</span>
+  <span id="lag" onClick="Navigate()">导览</span>
+  <span id="lag" onClick="pick()">显示经纬度</span>
+  <span id="lag5"></span>
+  
+</div>
+<div id="cesiumContainer"></div>
+  <script>
+    var viewer = new Cesium.Viewer('cesiumContainer',{
+	imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
+        url : 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+    }),
+	//baseLayerPicker : false,
+	geocoder : false
+	});
+	
+	  var minhang=Cesium.GeoJsonDataSource.load('../Apps/data/minhang.geojson',{
+		  stroke : Cesium.Color.DARKGRAY,
+		  fill : Cesium.Color.LIGHTGREEN.withAlpha(0.5),
+		  strokeWidth : 1
+	  });
+	  
+	  var water=Cesium.GeoJsonDataSource.load('../Apps/data/waterpolygon.geojson',{
+		  stroke : Cesium.Color.CORNFLOWERBLUE,
+		  fill : Cesium.Color.CORNFLOWERBLUE,
+		  strokeWidth : 0
+	  });
+	  
+	  var dorm=Cesium.GeoJsonDataSource.load('../Apps/data/dorm.geojson',{
+		  stroke : Cesium.Color.INDIANRED,
+		  fill : Cesium.Color.INDIANRED,
+		  strokeWidth : 0
+	  });
+	  
+	  var roadp=Cesium.GeoJsonDataSource.load('../Apps/data/roadpolygon.geojson',{
+		  stroke : Cesium.Color.LIGHTSLATEGRAY,
+		  fill : Cesium.Color.LIGHTSLATEGRAY,
+		  strokeWidth : 0
+	  });
+
+	  var sportfield=Cesium.GeoJsonDataSource.load('../Apps/data/sportfield.geojson',{
+		  stroke : Cesium.Color.BEIGE,
+		  fill : Cesium.Color.DARKOLIVEGREEN,
+		  strokeWidth : 0
+	  });
+
+	  var building = Cesium.GeoJsonDataSource.load('../Apps/data/building.geojson',{
+		  stroke : Cesium.Color.BLACK,
+		  fill : Cesium.Color.DARKSALMON,
+		  strokeWidth : 1
+	  });
+	  
+	  var vegetation=Cesium.GeoJsonDataSource.load('../Apps/data/vegetation.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.PALEGREEN,
+		  strokeWidth : 1
+	  });
+	  
+	  var funcArea=Cesium.GeoJsonDataSource.load('../Apps/data/funcArea.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.YELLOW.withAlpha(0.5),
+		  strokeWidth : 1
+	  });
+	
+	//viewer.dataSources.add(minhang);
+	showfuncArea(funcArea);
+	viewer.zoomTo(funcArea);
+	
+	//高度模型突起函数
+	function extrude(data)
+	  {
+		  data.then(function(dataSource) {
+		  //viewer.dataSources.add(dataSource);
+		  
+		  var entities=dataSource.entities.values;
+		  
+		  for (var i = 0; i < entities.length; i++) {
+			  var entity = entities[i];           
+	  
+				  entity.polygon.material = Cesium.Color.fromCssColorString(entity.properties.颜色);
+				  entity.polygon.outlineColor = Cesium.Color.SILVER;
+				  entity.polygon.extrudedHeight = entity.properties.高度;}
+		  
+		  }).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+	  }
+	//初始化函数：要素类回归原始属性
+	function initiate()
+	{
+	  water=Cesium.GeoJsonDataSource.load('../Apps/data/waterpolygon.geojson',{
+		  stroke : Cesium.Color.CORNFLOWERBLUE,
+		  fill : Cesium.Color.CORNFLOWERBLUE,
+		  strokeWidth : 0
+	  });
+	  
+	  dorm=Cesium.GeoJsonDataSource.load('../Apps/data/dorm.geojson',{
+		  stroke : Cesium.Color.INDIANRED,
+		  fill : Cesium.Color.INDIANRED,
+		  strokeWidth : 0
+	  });
+	  
+	  roadp=Cesium.GeoJsonDataSource.load('../Apps/data/roadpolygon.geojson',{
+		  stroke : Cesium.Color.LIGHTSLATEGRAY,
+		  fill : Cesium.Color.LIGHTSLATEGRAY,
+		  strokeWidth : 0
+	  });
+
+	  sportfield=Cesium.GeoJsonDataSource.load('../Apps/data/sportfield.geojson',{
+		  stroke : Cesium.Color.BEIGE,
+		  fill : Cesium.Color.DARKOLIVEGREEN,
+		  strokeWidth : 0
+	  });
+
+	  building = Cesium.GeoJsonDataSource.load('../Apps/data/building.geojson',{
+		  stroke : Cesium.Color.BLACK,
+		  fill : Cesium.Color.DARKSALMON,
+		  strokeWidth : 1
+	  });
+	  
+	  vegetation=Cesium.GeoJsonDataSource.load('../Apps/data/vegetation.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.PALEGREEN,
+		  strokeWidth : 1
+	  });
+	  
+	  funcArea=Cesium.GeoJsonDataSource.load('../Apps/data/funcArea.geojson',{
+		  stroke : Cesium.Color.WHITE,
+		  fill : Cesium.Color.YELLOW.withAlpha(0.5),
+		  strokeWidth : 1
+	  });
+	  
+	}
+	
+	function showfuncArea(data)
+	{
+	    data.then(function(dataSource) {
+		  //viewer.dataSources.add(dataSource);
+		  
+		  var entities=dataSource.entities.values;
+		  
+		  for (var i = 0; i < entities.length; i++) {
+			  var entity = entities[i];           
+	  
+				  entity.polygon.material = Cesium.Color.fromCssColorString(entity.properties.颜色).withAlpha(0.5);
+				  entity.polygon.outlineColor = Cesium.Color.SILVER;
+				  //entity.polygon.extrudedHeight = entity.properties.height;
+				  }
+		  
+		  }).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		  viewer.dataSources.add(funcArea);
+	}
+	
+    function showVector()
+    {
+	    viewer.dataSources.removeAll();
+		viewer.entities.removeAll();
+		initiate();
+		//viewer.dataSources.add(minhang);
+		viewer.dataSources.add(water);
+		viewer.dataSources.add(dorm);
+		viewer.dataSources.add(roadp);
+		viewer.dataSources.add(sportfield);
+		viewer.dataSources.add(building);
+		viewer.dataSources.add(vegetation);
+		showfuncArea(funcArea);
+		showlabel(0.3);
+		
+		viewer.zoomTo(building);
+		//document.getElementById("lag5").innerHTML="haha";
+		//var Geoentities = createGeoentity(building,dorm);
+		//document.getElementById("lag5").innerHTML="haha";
+		
+		
+		//viewer.camera.flyTo({
+			//destination : Cesium.Rectangle.fromDegrees(121.43132684,31.02652878,121.46997124,31.04127843)
+			//});
+    }
+    
+	function showBox()
+	{
+		viewer.entities.removeAll();
+		viewer.dataSources.removeAll();
+		//viewer.dataSources.add(minhang);	
+		viewer.dataSources.add(water);
+		viewer.dataSources.add(dorm);
+		viewer.dataSources.add(roadp);
+		viewer.dataSources.add(sportfield);
+		viewer.dataSources.add(building);
+		viewer.dataSources.add(vegetation);
+		showfuncArea(funcArea);
+		showlabel(1.5);
+		extrude(dorm);
+		extrude(building);
+		viewer.zoomTo(building);
+		//viewer.camera.flyTo({
+			//destination : Cesium.Rectangle.fromDegrees(121.44107759,31.02911700,121.46010902,31.03694032)
+			//});
+	}
+	//对象构造器：模型
+	function model(name,lon,lat,add)
+	{
+		this.name=name;
+		this.lon=lon;
+		this.lat=lat;
+		this.add=add;
+		this.show=show;
+		function show()
+		{
+		  var position = Cesium.Cartesian3.fromDegrees(this.lon,this.lat,0);
+	   	  var heading = Cesium.Math.toRadians(0);
+		  var pitch = 0;
+		  var roll = 0;
+		  var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		  var b16 = viewer.entities.add({
+		 	  name : this.name,
+		 	  position : position,
+			  orientation : orientation,
+			  model : {
+				  uri : this.add,
+				  //minimumPixelSize : 128
+			  }
+		  });
+		}
+	}
+	
+	//对象构造器：地理实体
+	function geoentity(name,entity)
+	{
+		this.name=name;
+		this.entity=entity;
+	}
+	
+	function createGeoentity(buidling,dorm)
+	{
+		var Geoentities=[];
+		building.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var name = entity.properties.name;
+				//alert(name);
+				var geoentity = new geoentity(name,entity);
+				alert(geoentity.name);
+				Geoentities.push(geoentity);
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		dorm.then(function(dataSource){
+			var entities = dataSource.entities.values;
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var name = entity.properties.name;
+				var geoentity = new geoentity(name,entity);
+				Geoentities.push(geoentity);
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		document.getElementById("lag5").innerHTML="ahah";
+		//alert(Geoentities.length);
+		return Geoentities;
+	}
+	
+	
+	//document.getElementById("lag5").innerHTML=Geoentities[0].name;
+	
+	function getPath()
+	{
+		var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+		var stop = Cesium.JulianDate.addSeconds(start, 190, new Cesium.JulianDate());
+		//var travpath = Cesium.GeoJsonDataSource.load('../Apps/data/travpath.geojson');
+		var positions = Cesium.Cartesian3.fromDegreesArray([121.44975940905225, 31.026823980783909,121.44838322493906, 31.030686174908027 ,  121.45100241405771, 31.031640625180081,  121.4499813742318, 31.03394906304737 ,  121.44867177967247, 31.035058888945105 ,  121.44698484430792, 31.03565819492988 ,  121.44536449849723, 31.035791374037608 ,  121.4447873890304, 31.034082242155097 ,  121.44500935420994, 31.032617271970086 ,  121.4447873890304, 31.031307677410759 , 121.44578623233836, 31.030153458477116 , 121.44609698358973, 31.029687331600066 , 121.44609698358973, 31.028555309184377 , 121.44658530698473, 31.027978199717555 , 121.44753975725678, 31.027778431055964 , 121.44887154833407, 31.028177968379147 , 121.44889374485201, 31.028200164897104 , 121.44889374485201, 31.028200164897104 , 121.44893813788792, 31.028200164897104]);
+		var message=["你的正前方是图书馆","你的左手边是教学区"];
+          //重点了解SampledPositionProperty
+		  var property = new Cesium.SampledPositionProperty();
+		  //document.getElementById("lag5").innerHTML=positions[0].toString();
+		  for(var i=0 ; i<positions.length ; i++)
+		  { 
+			  var time = Cesium.JulianDate.addSeconds(start, 10*i, new Cesium.JulianDate());
+			  //var str = Cesium.JulianDate.toIso8601(time);
+			  //alert(str);
+			  var position = positions[i];
+			  //alert(positions[i].toString());
+			  property.addSample(time, position);
+			  //alert(property.getValue(time,new Cesium.Cartesian3()).toString());			  
+		  }
+		  
+		return property;
+	}
+	
+	function Navigate()
+	{
+		var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+		var stop = Cesium.JulianDate.addSeconds(start, 190, new Cesium.JulianDate());
+		//Make sure viewer is at the desired time.
+		viewer.clock.startTime = start.clone();
+		viewer.clock.stopTime = stop.clone();
+		viewer.clock.currentTime = start.clone();
+		viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; //Loop at the end
+		viewer.clock.multiplier = 1;
+		
+		//Set timeline to simulation bounds
+		viewer.timeline.zoomTo(start, stop);
+		
+		var position = getPath();
+		//alert("!");
+		//alert(position.getValue(start,new Cesium.Cartesian3()).toString());
+		var navcar = viewer.entities.add({
+		//Set the entity availability to the same interval as the simulation time.
+		availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
+			start : start,
+			stop : stop
+		})]),
+	
+		//Use our computed positions
+		position : position,
+	    
+		//Automatically compute orientation based on position movement.
+		orientation : new Cesium.VelocityOrientationProperty(position),
+	
+		//Load the Cesium plane model to represent the entity
+		model : {
+			uri : '../Apps/3dmodel/CesiumMilkTruck/CesiumMilkTruck.gltf',
+			//minimumPixelSize : 64
+		},
+		path : {
+        resolution : 1,
+        material : new Cesium.PolylineGlowMaterialProperty({
+            glowPower : 0.1,
+            color : Cesium.Color.RED
+        }),
+        width : 30
+        }
+
+		});
+		//alert("!!");
+		navcar.position.setInterpolationOptions({
+            interpolationDegree : 5,
+            interpolationAlgorithm : Cesium.LinearApproximation
+        });
+		viewer.trackedEntity = navcar;
+	}
+	
+	function showModel2()
+	{
+	    viewer.dataSources.removeAll();
+		viewer.entities.removeAll();
+		showfuncArea(funcArea);
+		
+		//showVector();
+		//extrude(building);
+		/*building.then(function(dataSource){
+		   var entities = dataSource.entities.values;
+		   for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				entity.polygon.show=false;
+			}
+		});*/
+		var models=[new model('本科生公寓21号楼',121.44978350,31.03769624,'../Apps/3dmodel/dorm21.gltf'),
+		            new model('图书馆裙楼',121.44853723,31.03181394,'../Apps/3dmodel/lib2.gltf'),
+					new model('图书馆主楼',121.44765130,31.03051948,'../Apps/3dmodel/librarymain.gltf'),
+					new model('河东食堂',121.44636540	,31.03671762,'../Apps/3dmodel/hedongshitang.gltf'),
+					new model('本科生公寓19号楼',121.44903672,31.03757642,'../Apps/3dmodel/dorm21.gltf'),
+					new model('本科生公寓15号楼',121.44820094,31.03737539,'../Apps/3dmodel/dorm21.gltf'),
+					new model('本科生公寓11号楼',121.44748178,31.03731686,'../Apps/3dmodel/dorm21.gltf'),
+					new model('本科生公寓22号楼',121.45037358,31.03742557,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓20号楼',121.44956380,31.03729733,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓16号楼',121.44866193,31.03720886,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓12号楼',121.44692729,31.03701054,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓8号楼',121.44775455,31.03707305,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓6号楼',121.44424479,31.03671715,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓4号楼',121.44334812,31.03657066,'../Apps/3dmodel/dorm22.gltf'),
+					new model('本科生公寓9号楼',121.44747033,31.03819156,'../Apps/3dmodel/dorm09.gltf'),
+					new model('本科生公寓7号楼',121.44661642,31.03796109,'../Apps/3dmodel/dorm09.gltf'),
+					new model('河西食堂',121.44504553,31.03648267,'../Apps/3dmodel/hexishitang.gltf'),
+					new model('第二教学楼',121.45015549,31.03284853,'../Apps/3dmodel/teachbuilding2.gltf')
+					];
+		for(var i=0;i<models.length;i++)
+		{
+			models[i].show();
+		}
+		//viewer.zoomTo(viewer.entities);
+
+	}
+	
+	function pick()
+	{
+		var scene = viewer.scene;
+		var handler;
+		var ellipsoid = scene.globe.ellipsoid;
+		handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+		handler.setInputAction(function(movement) {
+			var cartesian = viewer.camera.pickEllipsoid(movement.endPosition, ellipsoid);
+			if (cartesian) {
+				var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+				var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(8);
+				var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(8);
+				
+				document.getElementById("lag5").innerHTML="经度："+longitudeString+"  纬度："+latitudeString;
+				//entity.position = cartesian;
+				//entity.label.show = true;
+				//entity.label.text = '(' + longitudeString + ', ' + latitudeString + ')';
+			} else {
+				document.getElementById("lag5").innerHTML="lon:NONE  lat:NONE";
+			}
+		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+	}
+	
+	function showModel()
+	{
+		viewer.dataSources.removeAll();
+		viewer.entities.removeAll();
+		
+		var position = Cesium.Cartesian3.fromDegrees(121.44978350,31.03769624,0);
+		var heading = Cesium.Math.toRadians(0);
+		var pitch = 0;
+		var roll = 0;
+		var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		var b16 = viewer.entities.add({
+			name : '本科生公寓21号楼',
+			position : position,
+			orientation : orientation,
+			model : {
+				uri : '../Apps/3dmodel/dorm21.gltf',
+				//minimumPixelSize : 128
+			}
+		});
+		
+		var position = Cesium.Cartesian3.fromDegrees(121.44853723,31.03181394,0);
+		var heading = Cesium.Math.toRadians(0);
+		var pitch = 0;
+		var roll = 0;
+		var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		var lib2 = viewer.entities.add({
+			name : '图书馆裙楼',
+			position : position,
+			orientation : orientation,
+			model : {
+				uri : '../Apps/3dmodel/lib2.gltf',
+				//minimumPixelSize : 128
+			}
+		});
+		
+		var position = Cesium.Cartesian3.fromDegrees(121.44765130,31.03051948,0);
+		var heading = Cesium.Math.toRadians(0);
+		var pitch = 0;
+		var roll = 0;
+		var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, heading, pitch, roll);
+		var lib = viewer.entities.add({
+			name : '图书馆主楼',
+			position : position,
+			orientation : orientation,
+			model : {
+				uri : '../Apps/3dmodel/librarymain.gltf',
+				//minimumPixelSize : 128
+			}
+		});
+		
+}
+	function searchloc()
+	{
+		var name=document.getElementById("searchbox").value;
+		//document.getElementById("lag5").innerHTML=document.getElementById("searchbox").value;
+		var address = new RegExp(name);
+		
+		building.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var geoname = entity.properties.名称;
+				//alert(name);
+				if(address.test(geoname)==true)
+				{
+					viewer.zoomTo(entity);
+					//viewer.trackedEntity = entity;
+				}
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+		dorm.then(function(dataSource){
+			var entities = dataSource.entities.values;
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var geoname = entity.properties.名称;
+				if(address.test(geoname)==true)
+				{
+					viewer.zoomTo(entity);
+					//viewer.trackedEntity = entity;
+				}
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		  });
+	}
+	
+	function showlabel(height)
+	{
+	    building.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			var time = Cesium.JulianDate.now();
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var label = entity.properties.名称;
+				var lon = entity.properties.中心经度;
+				var lat = entity.properties.中心纬度;
+				//alert(name);
+				viewer.entities.add({
+					position : Cesium.Cartesian3.fromDegrees(lon,lat),
+					label : {
+						text : label,
+						font : '16px 微软雅黑',
+						verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+						fillColor : Cesium.Color.SKYBLUE,
+						outlineColor : Cesium.Color.BLACK,
+						outlineWidth : 2,
+						style : Cesium.LabelStyle.FILL_AND_OUTLINE,
+						//pixelOffset : new Cesium.Cartesian2(0.0, entity.properties.高度),
+						eyeOffset : new Cesium.Cartesian3(0,entity.properties.高度*height,0),
+						translucencyByDistance : new Cesium.NearFarScalar(1000, 1.0, 2000, 0.0)
+						//pixelOffsetScaleByDistance : new Cesium.NearFarScalar(1.0e3, 1.0, 1.5e6, 0.0)
+					}
+				});
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		});
+		
+		dorm.then(function(dataSource) {
+			var entities = dataSource.entities.values;
+			//document.getElementById("lag5").innerHTML="ahah";
+			var time = Cesium.JulianDate.now();
+			for(var i=0;i<entities.length;i++)
+			{
+				var entity = entities[i];
+				var label = entity.properties.名称;
+				var lon = entity.properties.中心经度;
+				var lat = entity.properties.中心纬度;
+				//alert(name);
+				viewer.entities.add({
+					position : Cesium.Cartesian3.fromDegrees(lon,lat),
+					label : {
+						text : label,
+						font : '16px 微软雅黑',
+						verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+						fillColor : Cesium.Color.CRIMSON,
+						outlineColor : Cesium.Color.BLACK,
+						outlineWidth : 2,
+						style : Cesium.LabelStyle.FILL_AND_OUTLINE,
+						//pixelOffset : new Cesium.Cartesian2(0.0, entity.properties.高度),
+						eyeOffset : new Cesium.Cartesian3(0,entity.properties.高度*height,0),
+						translucencyByDistance : new Cesium.NearFarScalar(1000, 1.0, 2000, 0.0)
+						//pixelOffsetScaleByDistance : new Cesium.NearFarScalar(1.0e3, 1.0, 1.5e6, 0.0)
+					}
+				});
+			}
+		}).otherwise(function(error){
+			  //Display any errrors encountered while loading.
+			  window.alert(error);
+		});
+	}
+  </script>
+  <div></div>
+  <input name="search" type="text" id="searchbox">
+  <input name="searchbutton" type="submit" id="searchbutton" onClick="searchloc()" value="搜索">
+</body>
+</html>

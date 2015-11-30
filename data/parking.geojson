@@ -1,0 +1,17 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "title": "华闵停车场","marker-symbol": "parking", "marker-color": "#ADB288" }, "geometry": { "type": "Point", "coordinates": [ 121.45214913823102, 31.034559102519133 ] } },
+{ "type": "Feature", "properties": { "title": "教师之家","marker-symbol": "parking", "marker-color": "#ADB288" }, "geometry": { "type": "Point", "coordinates": [ 121.45490296155245, 31.03511382951913 ] } },
+{ "type": "Feature", "properties": { "title": "二教停车场" ,"marker-symbol": "parking", "marker-color": "#ADB288"}, "geometry": { "type": "Point", "coordinates": [ 121.44987079519531, 31.033013791590559 ] } },
+{ "type": "Feature", "properties": { "title": "法商楼停车场" ,"marker-symbol": "parking", "marker-color": "#ADB288"}, "geometry": { "type": "Point", "coordinates": [ 121.45109911926676, 31.029962793090569 ] } },
+{ "type": "Feature", "properties": { "title": "行政楼停车场","marker-symbol": "parking", "marker-color": "#ADB288" }, "geometry": { "type": "Point", "coordinates": [ 121.45292179369532, 31.028655222304852 ] } },
+{ "type": "Feature", "properties": { "title": "物理楼停车场" ,"marker-symbol": "parking", "marker-color": "#ADB288"}, "geometry": { "type": "Point", "coordinates": [ 121.44668111494533, 31.028575975590563 ] } },
+{ "type": "Feature", "properties": { "title": "数统楼停车场" ,"marker-symbol": "parking", "marker-color": "#ADB288"}, "geometry": { "type": "Point", "coordinates": [ 121.44646318648104, 31.029843923019133 ] } },
+{ "type": "Feature", "properties": { "title": "四教停车场" ,"marker-symbol": "parking", "marker-color": "#ADB288"}, "geometry": { "type": "Point", "coordinates": [ 121.4451754273739, 31.031587350733417 ] } },
+{ "type": "Feature", "properties": { "title": "化学楼停车场","marker-symbol": "parking", "marker-color": "#ADB288" }, "geometry": { "type": "Point", "coordinates": [ 121.44527448576676, 31.03261755801913 ] } },
+{ "type": "Feature", "properties": { "title": "资环楼停车场" ,"marker-symbol": "parking", "marker-color": "#ADB288"}, "geometry": { "type": "Point", "coordinates": [ 121.44507636898105, 31.034063810554844 ] } }
+]
+}

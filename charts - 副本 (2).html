@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title></title>
+</head>
+<body>
+<div id="test"></div>
+<div id="test2"></div>
+<div id="test3"></div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:400px;width:400px"></div>
+
+<!-- ECharts单文件引入 -->
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script>var data=new Array();
+//var gid=parent.document.getElementsByTagName("iframe")[0].id;
+var gid=1;
+//document.getElementById("test").innerHTML="dasfdasdfasdfasdf";
+</script>
+<script src="test.js"></script>
+
+<script type="text/javascript" >
+//document.getElementById("test").innerHTML="zxcvzxcv";
+
+getdata(gid);
+
+document.getElementById("test").innerHTML=data[0,0];
+
+
+
+//var xdata=getCol(data,1);
+//document.getElementById("test").innerHTML=xdata[1];
+
+
+
+</script>
+<script>
+document.getElementById("test2").innerHTML=data[0,0];
+</script>
+</body>
+</html>
